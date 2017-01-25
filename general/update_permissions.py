@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Python script to delete all C++ source and header files from a root directory
+# Python script to update permissions of all files in a root directory
 
 import os,sys,datetime,logging
 from optparse import OptionParser

@@ -1,5 +1,7 @@
 import numpy as np
 
+# Perform numerous numpy operations
+
 def run():
     # create a column vector
     col_vec = np.array([[1], [2]])

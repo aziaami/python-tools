@@ -1,27 +1,42 @@
 #!/usr/bin/python
 
-# Python script to delete all C++ source and header files from a root directory
+# Python script to rename and move files that contain specified strings 
 
-import os,sys,time,datetime,logging
+import fnmatch, shutil, os,sys,time,datetime,logging
 from optparse import OptionParser
 
-FILE_EXTENSIONS=['.h','.cpp']
+LASER2D="laser2d.monolithic"
+LMS="LMS1xx.monolithic"
 
+MIPIMU="MicrostrainMIPIMU.monolithic"
+MIPRAW="MicrostrainMIPRawPacketData.monolithic"
+
+ext=[LASER2D, LMS, MIPIMU, MIPRAW]
 # -----------------------------------------------------------------------------
-def step(ext, dirname, names):
+def rename_laser_files(root, dirs, files):
     '''function executed by walk in every new folder'''
-    for e in ext:
-        e = e.lower()
-        for name in names:
-            if name.lower().endswith(e):
-                file_path = os.path.join(dirname,name)
-                logging.info(file_path)
+
+    os.chdir(root)
+
+    subdir = ""
+    for d in dirs:
+        subdir = d
+
+    for f in files:
+        for e in ext:
+            if fnmatch.fnmatch(f, "*"+e) and not fnmatch.fnmatch(f,e):
+                logging.info(e + " : " + f)
+            
+                new_path = os.path.join(root, subdir, e)
+                logging.info("...moving to " + new_path)
                 if not options.dry_run:
-                    os.remove(file_path)
+                    shutil.move(os.path.join(root,f), new_path)
+
+
 # -----------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    usage = "%prog - Delete all c++ header and source files in a given root directory."
+    usage = "%prog - Rename and move files that contain the specified strings."
     parser = OptionParser(usage = usage)
 
     parser.add_option("-d", "--root_directory",
@@ -60,5 +75,8 @@ if __name__ == "__main__":
         logging.critical('root directory does not exist: %s', options.root_directory)
         sys.exit(-1)
 
-    # walks through the directory tree, performing the 'step' function at every step  
-    os.path.walk(options.root_directory, step, FILE_EXTENSIONS)    
+    # walks through the directory tree, performing the given function at every step  
+    for root, dirs, files in os.walk(options.root_directory):
+        rename_laser_files(root, dirs, files)
+
+    logging.info("Complete")
