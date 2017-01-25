@@ -46,12 +46,13 @@ for filepath in RUNS:
         line = line.rstrip('\n')
         e = [l.strip() for l in line.split(',')]
 
-        t_since_start = (float(e[0])-1469531609469617)*(10**-6)     # seconds
+        t_since_start = (float(e[0]) - 1469531609469617) * \
+            (10**-6)     # seconds
 
         # store all values in dataset
         t.append(t_since_start)
-        x.append(float(e[1])*1)     # multiply 100 to get cm, 1000 to get mm
-        y.append(float(e[2])*1000)  # multiply 100 to get cm, 1000 to get mm
+        x.append(float(e[1]) * 1)     # multiply 100 to get cm, 1000 to get mm
+        y.append(float(e[2]) * 1000)  # multiply 100 to get cm, 1000 to get mm
 
         # define a time interval
         ts_start = 190    # start time (s) of interval
@@ -60,10 +61,12 @@ for filepath in RUNS:
         # only store values in the defined time interval
         if ((ts_start < t_since_start) and (t_since_start < ts_end)):
             dt.append(t_since_start)
-            dx.append(float(e[1])*1)     # multiply 100 to get cm, 1000 to get mm
-            dy.append(float(e[2])*1000)  # multiply 100 to get cm, 1000 to get mm
+            # multiply 100 to get cm, 1000 to get mm
+            dx.append(float(e[1]) * 1)
+            # multiply 100 to get cm, 1000 to get mm
+            dy.append(float(e[2]) * 1000)
 
-    #plt.plot(x, y)     # line plot
+    # plt.plot(x, y)     # line plot
 
     # Use scatter to plot points for each datum
     #plt.scatter(x, y, color=get_color(filepath))

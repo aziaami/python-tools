@@ -2,24 +2,31 @@
 
 # Python script to update permissions of all files in a root directory
 
-import os,sys,datetime,logging
+import os
+import sys
+import datetime
+import logging
 from optparse import OptionParser
 
 # -----------------------------------------------------------------------------
+
+
 def update_permissions(some_path):
     logging.info(some_path)
     if not options.dry_run:
         os.chmod(some_path, options.permission)
 # -----------------------------------------------------------------------------
+
+
 def os_walk(some_path):
     '''function executed by walk in every new folder'''
     logging.info('Walking down root directory: ' + some_path)
     for path, dirnames, filenames in os.walk(some_path):
-      for dirname in dirnames:
-        update_permissions(os.path.join(path, dirname))
+        for dirname in dirnames:
+            update_permissions(os.path.join(path, dirname))
 
-      for filename in filenames:
-        update_permissions(os.path.join(path, filename))
+        for filename in filenames:
+            update_permissions(os.path.join(path, filename))
 
 # -----------------------------------------------------------------------------
 
@@ -52,10 +59,12 @@ if __name__ == "__main__":
         logging.critical('log_dir must exist: %s', options.log_dir)
         sys.exit(-1)
     start_time_str = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S-%f')
-    log_directory_name = os.path.join(options.log_dir, 'DataLoggingMonitor-%s.log' % start_time_str)
+    log_directory_name = os.path.join(
+        options.log_dir, 'DataLoggingMonitor-%s.log' % start_time_str)
     FORMAT = '%(asctime)-15s %(levelname)-8s %(message)s'
     if options.log_info_to_file:
-        logging.basicConfig(filename=log_directory_name, level=logging.DEBUG, format=FORMAT)
+        logging.basicConfig(filename=log_directory_name,
+                            level=logging.DEBUG, format=FORMAT)
         print '===> Running with logfile: %s' % log_directory_name
     else:
         logging.basicConfig(level=logging.DEBUG, format=FORMAT)

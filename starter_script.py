@@ -27,7 +27,7 @@ if __name__ == '__main__':
     parser = OptionParser(usage=usage)
 
     try:
-        ## ===== Input arguments ================
+        # ===== Input arguments ================
         parser.add_option("--log_to_file",
                           action="store_true", dest="log_info_to_file",
                           default=False,
@@ -45,17 +45,19 @@ if __name__ == '__main__':
 
         # add arguments here
 
-        ## ======================================
+        # ======================================
 
         (options, args) = parser.parse_args()
 
         # Open logfile.
         start_time_str = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S_%f')
-        log_directory_name = os.path.join(options.log_dir, '%prog-%s.log' % start_time_str)
+        log_directory_name = os.path.join(
+            options.log_dir, '%prog-%s.log' % start_time_str)
         FORMAT = '%(asctime)-15s %(levelname)-8s %(message)s'
 
         if options.log_info_to_file:
-            logging.basicConfig(filename=log_directory_name, level=logging.DEBUG, format=FORMAT)
+            logging.basicConfig(filename=log_directory_name,
+                                level=logging.DEBUG, format=FORMAT)
             print '===> Running with logfile: %s' % log_directory_name
         else:
             logging.basicConfig(level=logging.DEBUG, format=FORMAT)
@@ -68,17 +70,17 @@ if __name__ == '__main__':
 
         # validate other input args here
 
-        ## ================================================
+        # ================================================
 
         # Print out configuration at the start for reference in a log file
         logging.info('Running with configuration:')
         logging.info(parser.parse_args())
 
-        ## ====== SCRIPT CODE HERE ========================
+        # ====== SCRIPT CODE HERE ========================
 
         HelloWorld()
 
-    ## ================================================
+    # ================================================
     except KeyboardInterrupt, e:  # Ctrl-C
         print('Ctrl-C pressed')
         raise e
